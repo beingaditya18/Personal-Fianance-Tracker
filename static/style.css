@@ -1,0 +1,204 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    line-height: 1.6; /* Improve readability */
+}
+
+/* Navbar */
+.navbar {
+    padding: 15px 20px; /* Add horizontal padding */
+    background-color: #fff; /* Default to white or customize */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    display: flex;
+    justify-content: space-between; /* Space out brand and links */
+    align-items: center;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.75rem; /* Slightly larger brand text */
+    color: #007bff; /* Brand color */
+    text-decoration: none !important; /* Remove default link styling */
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    list-style: none; /* Remove bullet points from list */
+    padding-left: 0; /* Reset default padding */
+    margin-bottom: 0; /* Reset default margin */
+}
+
+.nav-item {
+    margin-left: 15px;
+}
+
+.nav-link {
+    font-size: 1.1rem;
+    color: #333 !important; /* Ensure link color */
+    text-decoration: none !important; /* Remove default link styling */
+    transition: color 0.3s ease-in-out;
+    padding: 8px 12px; /* Add padding for better touch targets */
+    border-radius: 5px; /* Optional: slight rounded corners */
+}
+
+.nav-link:hover {
+    color: #ffc107 !important; /* Highlight on hover */
+    background-color: transparent; /* Optional: remove background on hover */
+}
+
+/* Hero Section */
+.hero {
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-size: cover;
+    color: white;
+    position: relative; /* For overlay positioning */
+    overflow: hidden; /* Clip any overflowing background */
+}
+
+.hero::before { /* Optional: Darker overlay using pseudo-element */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+    z-index: 1; /* Ensure it's above the background image */
+}
+
+.hero-overlay {
+    padding: 30px;
+    border-radius: 10px;
+    position: relative; /* Allows text to be above the pseudo-element */
+    z-index: 2;
+}
+
+.hero h1 {
+    font-size: 2.75rem; /* Slightly larger heading */
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 1.25rem; /* Slightly larger paragraph */
+    margin-top: 15px;
+    line-height: 1.7; /* Improve readability of paragraph */
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 12px 25px; /* Slightly larger button */
+    font-size: 1.1rem;
+    border-radius: 8px; /* More rounded buttons */
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out; /* Add transform for a slight effect on hover */
+    text-decoration: none !important; /* Remove link styling */
+    color: white !important; /* Ensure text is white */
+    display: inline-block; /* Allows margin/padding to work correctly */
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow on hover */
+}
+
+/* Sections */
+.container {
+    padding: 60px 20px; /* Add horizontal padding to container */
+    max-width: 1200px; /* Limit container width for better readability on large screens */
+    margin: 0 auto; /* Center the container */
+}
+
+/* Features Section */
+.features-section {
+    padding-top: 70px;
+    padding-bottom: 70px;
+    text-align: center;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.card {
+    border: 1px solid #ddd; /* Add a subtle border */
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Add box-shadow transition */
+    background-color: white;
+    padding: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle card shadow */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1); /* More pronounced shadow on hover */
+}
+
+.card-icon {
+    font-size: 2rem;
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 1.3rem; /* Slightly larger card title */
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.card-text {
+    color: #666;
+    line-height: 1.7;
+}
+
+/* Footer */
+.footer {
+    background: #343a40;
+    color: white;
+    padding: 20px 20px; /* Add horizontal padding */
+    margin-top: 40px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.footer p {
+    margin-bottom: 0; /* Remove default paragraph margin */
+}
+
+/* Responsive adjustments (optional) */
+@media (max-width: 768px) {
+    .navbar-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 10px;
+    }
+    .nav-item {
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+    .hero {
+        height: auto;
+        padding: 80px 20px;
+    }
+    .hero h1 {
+        font-size: 2rem;
+    }
+    .hero p {
+        font-size: 1.1rem;
+    }
+}
