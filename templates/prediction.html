@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spending Prediction | FinanceTrack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f8ff, #e0f2f7); /* Light blue gradient */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .navbar {
+            background-color: #00bcd4 !important; /* Teal navbar */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: white !important;
+        }
+        .navbar-brand .logo i {
+            margin-right: 10px;
+        }
+        .navbar-nav .nav-link {
+            color: white !important;
+            margin-left: 15px;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #b2ebf2 !important;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin-top: 80px; /* Adjust for fixed navbar */
+        }
+
+        h2 {
+            color: #00838f; /* Teal heading */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .prediction-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .prediction-result {
+            background-color: #e0f7fa; /* Light teal background */
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #00acc1; /* Cyan text */
+            font-size: 1.1rem;
+        }
+
+        .prediction-result strong {
+            font-weight: bold;
+            color: #00838f; /* Darker teal */
+        }
+
+        .finance-master {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+        }
+
+        .finance-master h3 {
+            color: #00acc1; /* Cyan heading */
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .finance-master p strong {
+            font-weight: bold;
+            color: #00838f; /* Darker teal */
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #ff9800; /* Orange highlight */
+        }
+
+        .finance-master h4 {
+            color: #00838f; /* Teal subheading */
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .finance-master ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .finance-master ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .finance-master ul li:last-child {
+            border-bottom: none;
+        }
+
+        .student-data {
+            background: #f0f8ff; /* Light blue background */
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0f2f7;
+        }
+
+        .student-data h4 {
+            color: #00838f; /* Teal subheading */
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .student-data ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .student-data ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e0f2f7;
+        }
+
+        .student-data ul li strong {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Consider adding more specific styles if needed */
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand logo" href="/">
+                <i class="fas fa-chart-line fa-lg"></i>
+                FinanceTrack
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/transactions"><i class="fas fa-list-alt"></i> Transactions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/budgets"><i class="fas fa-chart-bar"></i> Budgets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reports"><i class="fas fa-file-invoice-dollar"></i> Reports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/prediction"><i class="fas fa-chart-line"></i> Spending Prediction</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/financial_advice"><i class="fas fa-lightbulb"></i> Financial Advice</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-login text-white" href="/profile"><i class="fas fa-user-cog"></i> Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-signup text-white" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container prediction-container">
+        <h2>Spending Prediction for {{ user.firstname }}</h2>
+
+        <div class="prediction-result">
+            <p><strong>Predicted Spending Pattern:</strong>
+                {% if prediction and prediction.risk %}
+                    {{ prediction.risk }}
+                {% elif prediction and prediction.recommendation %}
+                    {{ prediction.recommendation }}
+                {% else %}
+                    Prediction Unavailable - Check FinanceTrack Analysis
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="finance-master">
+            <h3>FinanceTrack Master Analysis & Recommendations</h3>
+            <p><strong>Situation Analysis:</strong> Based on your past spending habits and current financial data, FinanceTrack Master suggests that your spending pattern is
+                <span class="highlight">
+                    {% if prediction and prediction.risk %}
+                        {{ prediction.risk }}
+                    {% elif prediction and prediction.recommendation %}
+                        {{ prediction.recommendation }}
+                    {% else %}
+                        Under Review for Spending Trends
+                    {% endif %}
+                </span>.
+            </p>
+
+            <h4>How to Adjust:</h4>
+            <ul>
+                <li>Review your recent transactions to identify areas of high spending.</li>
+                <li>Set budgets for different spending categories to gain control.</li>
+                <li>Consider automating savings to ensure consistent financial growth.</li>
+                <li>Explore tools within FinanceTrack to track your progress against your goals.</li>
+            </ul>
+        </div>
+
+        <div class="student-data">
+            <h4>Your Recent Spending Data:</h4>
+            <ul>
+                <li><strong>Total Spending (Last Month):</strong> {{ user_data.last_month_spending }}</li>
+                <li><strong>Average Spending (Last 3 Months):</strong> {{ user_data.average_spending }}</li>
+                <li><strong>Top Spending Category:</strong> {{ user_data.top_category }}</li>
+                <li><strong>Number of Transactions (Last Month):</strong> {{ user_data.transaction_count }}</li>
+                <li><strong>Savings Rate (Target):</strong> {{ user_data.savings_rate }}%</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

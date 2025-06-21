@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinanceTrack</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/static/wallet.png">
+    <style>
+        body {
+            font-family: 'Roboto Slab', serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #e0f7fa; /* Light Teal */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 24px;
+            color: #00acc1 !important; /* Teal */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #00acc1 !important; /* Teal */
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #00838f !important; /* Darker Teal */
+        }
+
+        .hero {
+            background: url('/static/finance_bg.jpg') no-repeat center center/cover; /* Replace with your image */
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-overlay h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .hero-overlay p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-overlay .btn {
+            background-color: #00acc1; /* Teal */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .hero-overlay .btn:hover {
+            background-color: #00838f; /* Darker Teal */
+        }
+
+        .features {
+            padding: 40px 0;
+            background-color: #e0f7fa; /* Light Teal */
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .feature-item img {
+            max-width: 80px;
+            margin-bottom: 15px;
+        }
+
+        .feature-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #00838f; /* Darker Teal */
+        }
+
+        .feature-item p {
+            color: #495057;
+        }
+
+        .auth-buttons {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .auth-buttons .btn {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .auth-buttons .btn-login {
+            background-color: #00acc1; /* Teal */
+            color: white;
+            border: none;
+        }
+
+        .auth-buttons .btn-signup {
+            background-color: #28a745; /* Green */
+            color: white;
+            border: none;
+        }
+
+        .auth-buttons .btn:hover {
+            opacity: 0.9;
+        }
+
+        .footer {
+            background-color: #00838f; /* Dark Teal */
+            color: #e0f7fa; /* Light Teal */
+            text-align: center;
+            padding: 20px 0;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand logo" href="/">
+                <img src="/static/wallet.png" alt="FinanceTrack Logo" height="30">
+                FinanceTrack
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#auth">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-overlay">
+            <h1>Welcome to FinanceTrack</h1>
+            <p>Your Smart Solution for Managing Personal Finances</p>
+            <a href="#features" class="btn btn-lg">Explore Features</a>
+        </div>
+    </section>
+
+    <section class="features py-5" id="features">
+        <div class="container">
+            <h2 class="text-center mb-4" style="color: #00838f;">Key Features</h2>
+            <div class="row">
+                <div class="col-md-4 feature-item">
+                    <img src="https://img.icons8.com/ios-filled/50/00838f/money-bag.png" alt="Income & Expense Tracking">
+                    <h3>Income & Expense Tracking</h3>
+                    <p>Easily record your income and expenses to get a clear financial overview.</p>
+                </div>
+                <div class="col-md-4 feature-item">
+                    <img src="https://img.icons8.com/ios-filled/50/00838f/pie-chart.png" alt="Budgeting Tools">
+                    <h3>Budgeting Tools</h3>
+                    <p>Set and manage budgets to stay in control of your spending habits.</p>
+                </div>
+                <div class="col-md-4 feature-item">
+                    <img src="https://img.icons8.com/ios-filled/50/00838f/report.png" alt="Financial Reports">
+                    <h3>Financial Reports</h3>
+                    <p>Generate insightful reports to analyze your financial health and trends.</p>
+                </div>
+                <div class="col-md-4 feature-item">
+                    <img src="https://img.icons8.com/ios-filled/50/00838f/goal.png" alt="Financial Goals">
+                    <h3>Financial Goals</h3>
+                    <p>Set and track your financial goals to achieve your long-term objectives.</p>
+                </div>
+                <div class="col-md-4 feature-item">
+                    <img src="https://img.icons8.com/ios-filled/50/00838f/prediction.png" alt="Spending Prediction">
+                    <h3>Spending Prediction</h3>
+                    <p>Get insights into your future spending based on past patterns.</p>
+                </div>
+                <div class="col-md-4 feature-item">
+                    <img src="https://img.icons8.com/ios-filled/50/00838f/advice.png" alt="Financial Advice">
+                    <h3>Financial Advice</h3>
+                    <p>Receive personalized tips and advice to improve your financial well-being.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="auth-buttons py-5" id="auth">
+        <div class="container">
+            <h2 class="text-center mb-4" style="color: #00838f;">Get Started</h2>
+            <form action="/login" method="POST" class="d-flex justify-content-center align-items-center gap-3">
+                <div class="mb-3">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-login">Login</button>
+            </form>
+            </div>
+    </section>
+
+    <footer class="footer mt-5">
+        <div class="container text-center py-4">
+            <p class="footer-text mb-0">&copy; 2025 <strong>FinanceTrack</strong>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

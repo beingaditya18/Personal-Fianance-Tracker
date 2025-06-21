@@ -1,0 +1,448 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Tracker - Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #e0f7fa, #00acc1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #00838f !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: white !important;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-brand .logo i {
+            margin-right: 10px;
+        }
+        .navbar-nav .nav-link {
+            color: white !important;
+            margin-left: 15px;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #b2ebf2 !important;
+        }
+        .btn-login, .btn-signup {
+            background-color: #00acc1;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+        }
+        .btn-login:hover, .btn-signup:hover {
+            background-color: #00838f;
+        }
+        .dashboard-container {
+            padding: 30px;
+            margin-top: 80px; /* Adjust for fixed navbar height */
+        }
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .dashboard-header h1 {
+            color: #00838f;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .dashboard-widgets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .widget {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .widget-title {
+            color: #00acc1;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        .widget-title i {
+            margin-right: 10px;
+        }
+        .widget-content {
+            font-size: 1rem;
+            color: #555;
+        }
+        .income-widget .amount {
+            color: #2e7d32;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .expense-widget .amount {
+            color: #d32f2f;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .balance-widget .amount {
+            color: #1976d2;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .budget-summary-widget .progress {
+            background-color: #e0f2f7;
+            border-radius: 5px;
+            height: 10px;
+            margin-bottom: 10px;
+        }
+        .budget-summary-widget .progress-bar {
+            background-color: #00acc1;
+            height: 10px;
+            border-radius: 5px;
+        }
+        .transaction-list {
+            list-style: none;
+            padding: 0;
+        }
+        .transaction-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        .transaction-item .type {
+            font-weight: bold;
+        }
+        .transaction-item .amount {
+            font-weight: bold;
+        }
+        .income {
+            color: #2e7d32;
+        }
+        .expense {
+            color: #d32f2f;
+        }
+        .financial-goals-widget .progress {
+            background-color: #e0f2f7;
+            border-radius: 5px;
+            height: 10px;
+            margin-bottom: 10px;
+        }
+        .financial-goals-widget .progress-bar {
+            background-color: #ff9800;
+            height: 10px;
+            border-radius: 5px;
+        }
+        .gemini-analysis-widget .btn {
+            margin-top: 10px;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            background-color: #f5f5f5;
+            color: #777;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand logo" href="/">
+                <i class="fas fa-wallet fa-lg" style="color: white; margin-right: 10px;"></i>
+                FinanceTrack
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard"><i class="fas fa-chart-line"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/transactions"><i class="fas fa-list-alt"></i> Transactions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/budgets"><i class="fas fa-piggy-bank"></i> Budgets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reports"><i class="fas fa-file-invoice"></i> Reports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/prediction"><i class="fas fa-chart-line"></i> Spending Prediction</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/financial_advice"><i class="fas fa-lightbulb"></i> Financial Advice</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-login text-white" href="/profile"><i class="fas fa-user-cog"></i> Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-signup text-white" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 id="welcome-message">Welcome, Guest!</h1>
+            <p class="lead">Your personalized financial overview.</p>
+        </div>
+
+        <div class="dashboard-widgets">
+            <div class="widget income-widget">
+                <h2 class="widget-title"><i class="fas fa-arrow-circle-up" style="color: #2e7d32;"></i> Total Income</h2>
+                <div class="widget-content">
+                    <p class="amount" id="total-income">₹0.00</p>
+                    <p>This month</p>
+                </div>
+            </div>
+
+            <div class="widget expense-widget">
+                <h2 class="widget-title"><i class="fas fa-arrow-circle-down" style="color: #d32f2f;"></i> Total Expenses</h2>
+                <div class="widget-content">
+                    <p class="amount" id="total-expenses">₹0.00</p>
+                    <p>This month</p>
+                </div>
+            </div>
+
+            <div class="widget balance-widget">
+                <h2 class="widget-title"><i class="fas fa-coins" style="color: #fdd835;"></i> Current Balance</h2>
+                <div class="widget-content">
+                    <p class="amount" id="current-balance">₹0.00</p>
+                </div>
+            </div>
+
+            <div class="widget budget-summary-widget">
+                <h2 class="widget-title"><i class="fas fa-chart-pie" style="color: #1e88e5;"></i> Budget Summary</h2>
+                <div class="widget-content" id="budget-summary">
+                    <p>Loading budgets...</p>
+                    <a href="/budgets" class="btn btn-sm btn-outline-secondary mt-2">View All Budgets</a>
+                </div>
+            </div>
+
+            <div class="widget recent-transactions-widget">
+                <h2 class="widget-title"><i class="fas fa-history" style="color: #4caf50;"></i> Recent Transactions</h2>
+                <div class="widget-content" id="recent-transactions">
+                    <ul class="transaction-list">
+                        <li>Loading transactions...</li>
+                    </ul>
+                    <a href="/transactions" class="btn btn-sm btn-outline-secondary mt-2">View All Transactions</a>
+                </div>
+            </div>
+
+            <div class="widget financial-goals-widget">
+                <h2 class="widget-title"><i class="fas fa-bullseye" style="color: #ff9800;"></i> Financial Goals</h2>
+                <div class="widget-content" id="financial-goals">
+                    <p>Loading goals...</p>
+                    <a href="/goals" class="btn btn-sm btn-outline-secondary mt-2">View All Goals</a>
+                </div>
+            </div>
+
+            <div class="widget gemini-analysis-widget">
+                <h2 class="widget-title"><i class="fas fa-brain" style="color: #673ab7;"></i> Gemini Insights</h2>
+                <div class="widget-content">
+                    <p>Get AI-powered analysis of your spending patterns and personalized financial advice.</p>
+                    <a href="/analyze_spending" class="btn btn-primary btn-sm"><i class="fas fa-chart-line"></i> Analyze Spending</a>
+                    <a href="/financial_advice" class="btn btn-info btn-sm mt-2"><i class="fas fa-lightbulb"></i> Get Advice</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; {{ datetime.datetime.now().year }} Personal Finance Tracker. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const accessToken = localStorage.getItem('access_token');
+            if (!accessToken) {
+                window.location.href = '/login'; // Redirect to login if no token
+                return;
+            }
+
+            const headers = {
+                'Authorization': 'Bearer ' + accessToken,
+                'Content-Type': 'application/json'
+            };
+
+            // Fetch User Info for Welcome Message
+            fetch('/api/user/info', { headers: headers })
+                .then(response => response.json())
+                .then(data => {
+                    const welcomeMessage = document.getElementById('welcome-message');
+                    if (welcomeMessage && data.firstname) {
+                        welcomeMessage.textContent = `Welcome, ${data.firstname}!`;
+                    }
+                })
+                .catch(error => console.error('Error fetching user info:', error));
+
+            // Fetch Total Income
+            fetch('/api/dashboard/income', { headers: headers })
+                .then(response => response.json())
+                .then(data => {
+                    const totalIncomeElement = document.getElementById('total-income');
+                    if (totalIncomeElement && data.income !== undefined) {
+                        totalIncomeElement.textContent = `₹${parseFloat(data.income).toFixed(2)}`;
+                    }
+                })
+                .catch(error => console.error('Error fetching income:', error));
+
+            // Fetch Total Expenses
+            fetch('/api/dashboard/expenses', { headers: headers })
+                .then(response => response.json())
+                .then(data => {
+                    const totalExpensesElement = document.getElementById('total-expenses');
+                    if (totalExpensesElement && data.total_expenses !== undefined) {
+                        totalExpensesElement.textContent = `₹${parseFloat(data.total_expenses).toFixed(2)}`;
+                    }
+                })
+                .catch(error => console.error('Error fetching expenses:', error));
+
+            // Fetch Current Balance
+            fetch('/api/dashboard/balance', { headers: headers })
+                .then(response => response.json())
+                .then(data => {
+                    const currentBalanceElement = document.getElementById('current-balance');
+                    if (currentBalanceElement && data.balance !== undefined) {
+                        currentBalanceElement.textContent = `₹${parseFloat(data.balance).toFixed(2)}`;
+                    }
+                })
+                .catch(error => console.error('Error fetching balance:', error));
+
+            // Fetch Budget Summary
+            const budgetSummaryContainer = document.getElementById('budget-summary');
+            fetch('/api/dashboard/budgets', { headers: headers })
+                .then(response => response.json())
+                .then(data => {
+                    if (budgetSummaryContainer && data.budgets && data.budgets.length > 0) {
+                        budgetSummaryContainer.innerHTML = '';
+                        data.budgets.forEach(budget => {
+                            const progress = (budget.spent / budget.budget) * 100;
+                            const progressBarColor = progress > 80 ? '#f44336' : '#4caf50';
+                            budgetSummaryContainer.innerHTML += `
+                                <p><span class="math-inline">\{budget\.category\}\: ₹</span>{parseFloat(budget.spent).toFixed(2)} / ₹${parseFloat(budget.budget).toFixed(2)}</p>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: ${progress}%; background-color: <span class="math-inline">\{progressBarColor\};" aria\-valuenow\="</span>{budget.spent}" aria-valuemin="0" aria-valuemax="${budget.budget}"></div>
+                                </div>
+                            `;
+                        });
+                        budgetSummaryContainer.innerHTML += '<a href="/budgets" class="btn btn-sm btn-outline-secondary mt-2">View All Budgets</a>';
+                    } else if (budgetSummaryContainer) {
+                        budgetSummaryContainer.innerHTML = '<p>No budgets set yet.</p><a href="/budgets" class="btn btn-sm btn-outline-secondary mt-2">Set up budgets</a>';
+                    }
+                })
+                .catch(error => console.error('Error fetching budgets:', error));
+                    if (totalIncomeElement && data.income) {
+                        totalIncomeElement.textContent = `₹${data.income.toFixed(2)}`;
+                    }
+                })
+                .catch(error => console.error('Error fetching income:', error));
+
+            // Fetch Total Expenses
+            fetch('/api/dashboard/expenses', { headers: headers })
+                .then(response => response.json())
+                .then(data => {
+                    const totalExpensesElement = document.getElementById('total-expenses');
+                    if (totalExpensesElement && data.expenses) {
+                        totalExpensesElement.textContent = `₹${data.expenses.toFixed(2)}`;
+                    }
+                })
+                .catch(error => console.error('Error fetching expenses:', error));
+
+            // Fetch Current Balance
+            fetch('/api/dashboard/balance', { headers: headers })
+                .then(response => response.json())
+                .then(data => {
+                    const currentBalanceElement = document.getElementById('current-balance');
+                    if (currentBalanceElement && data.balance !== undefined) {
+                        currentBalanceElement.textContent = `₹${data.balance.toFixed(2)}`;
+                    }
+                })
+                .catch(error => console.error('Error fetching balance:', error));
+
+            // Fetch Budget Summary
+            fetch('/api/dashboard/budgets', { headers: headers })
+                .then(response => response.json())
+                .then(data => {
+                    const budgetSummaryElement = document.getElementById('budget-summary');
+                    if (budgetSummaryElement && Array.isArray(data.budgets)) {
+                        budgetSummaryElement.innerHTML = '';
+                        data.budgets.forEach(budget => {
+                            const percentage = Math.min((budget.spent / budget.limit) * 100, 100);
+                            budgetSummaryElement.innerHTML += `
+                                <p><strong>${budget.category}</strong>: ₹${budget.spent.toFixed(2)} / ₹${budget.limit.toFixed(2)}</p>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: ${percentage}%;"></div>
+                                </div>
+                            `;
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching budget summary:', error));
+
+            // Fetch Recent Transactions
+            fetch('/api/dashboard/transactions', { headers: headers })
+                .then(response => response.json())
+                .then(data => {
+                    const transactionsElement = document.querySelector('#recent-transactions .transaction-list');
+                    if (transactionsElement && Array.isArray(data.transactions)) {
+                        transactionsElement.innerHTML = '';
+                        data.transactions.slice(0, 5).forEach(txn => {
+                            const txnType = txn.type === 'income' ? 'income' : 'expense';
+                            transactionsElement.innerHTML += `
+                                <li class="transaction-item">
+                                    <span class="type">${txn.category}</span>
+                                    <span class="amount ${txnType}">₹${txn.amount.toFixed(2)}</span>
+                                </li>
+                            `;
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching transactions:', error));
+
+            // Fetch Financial Goals
+            fetch('/api/dashboard/goals', { headers: headers })
+                .then(response => response.json())
+                .then(data => {
+                    const goalsElement = document.getElementById('financial-goals');
+                    if (goalsElement && Array.isArray(data.goals)) {
+                        goalsElement.innerHTML = '';
+                        data.goals.forEach(goal => {
+                            const percentage = Math.min((goal.saved / goal.target) * 100, 100);
+                            goalsElement.innerHTML += `
+                                <p><strong>${goal.title}</strong>: ₹${goal.saved.toFixed(2)} / ₹${goal.target.toFixed(2)}</p>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: ${percentage}%;"></div>
+                                </div>
+                            `;
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching goals:', error));
+        });
+    </script>
+</body>
+</html>
